@@ -3,7 +3,7 @@
 - [Introduction](#introduction)
 - [Installation](#installation)
 - [Data Structure](#data-structure)
-- [Supported Datasets](#supported-datasests)
+- [Supported Datasets](#supported-datasets)
     - [7Scenes](#7scenes)
     - [12Scenes](#12scenes)
     - [Cambridge Landmarks](#cambridge-landmarks)
@@ -15,7 +15,7 @@
 
 DSAC\* is a learning-based visual re-localization method. After being trained for a specific scene, DSAC\* is able to estimate the camera rotation and translation from a single, new image of the same scene. DSAC\* is versatile w.r.t what data is available at training and test time. It can be trained from RGB images and ground truth poses alone, or additionally utilize depth maps (measured or rendered) or sparse scene reconstructions for training. During test time, it supports pose estimation from RGB as well as RGB-D inputs.
 
-DSAC\* is a combination of [Scene Coordinate Regression](https://ieeexplore.ieee.org/document/6619221) with CNNs and [Differentiable RANSAC (DSAC)](https://arxiv.org/abs/1611.05705) for end-to-end training. This code extends and improves our previous re-localization pipeline, [DSAC++](https://github.com/vislearn/LessMore) with support for RGB-D inpurts, support for data augmentation, a leaner network architecture, reduced training and test time, as well as other improvements for increased accuracy.
+DSAC\* is a combination of [Scene Coordinate Regression](https://ieeexplore.ieee.org/document/6619221) with CNNs and [Differentiable RANSAC (DSAC)](https://arxiv.org/abs/1611.05705) for end-to-end training. This code extends and improves our previous re-localization pipeline, [DSAC++](https://github.com/vislearn/LessMore) with support for RGB-D inputs, support for data augmentation, a leaner network architecture, reduced training and test time, as well as other improvements for increased accuracy.
 
 ![](overview.png)
 
@@ -71,7 +71,7 @@ Correspondences of files across the different sub-folders will be established by
 
 **Details for image files**: Any format supported by `scikit-image`.
 
-**Details for pose files**: Text files containing the camera pose **h** as 4x4 matrix following the 7Scenes/12Scenes convention. The pose transforms camera coordinates **e** in scene coordinates **y**, i.e. **y** = **he**.
+**Details for pose files**: Text files containing the camera pose **h** as 4x4 matrix following the 7Scenes/12Scenes convention. The pose transforms camera coordinates **e** to scene coordinates **y**, i.e. **y** = **he**.
 
 **Details for calibration files**: Text file. At the moment we only support the camera focal length (one value shared for x- and y-direction, in px). The principal point is assumed to lie in the image center.
 
@@ -89,17 +89,17 @@ Prior to using these datasets, please check their orignial licenses (see the web
 
 [7Scenes (MSR)](https://www.microsoft.com/en-us/research/project/rgb-d-dataset-7-scenes/) is a small-scale indoor re-localization dataset. The authors provide training/test split information, and a dense 3D scan of each scene, RGB and depth images as well as ground truth poses. We provide the Python script `setup_7scenes.py` to download the dataset and convert it into our format.
 
-**Note that the provided depth images are not yet registered to the RGB images, and using them directly will lead to inferior results.** As an alternative, we provide rendered depth maps [here](https://cloudstore.zih.tu-dresden.de/index.php/s/KH2DPrYfrsWoxJa/download). Just extract the archive inside `datasets/` and the depth maps just be merged into the respective 7Scenes sub-folders.
+**Note that the provided depth images are not yet registered to the RGB images, and using them directly will lead to inferior results.** As an alternative, we provide rendered depth maps [here](https://cloudstore.zih.tu-dresden.de/index.php/s/KH2DPrYfrsWoxJa/download). Just extract the archive inside `datasets/` and the depth maps should be merged into the respective 7Scenes sub-folders.
 
-For RGB-D experiments we provide pre-computed camera coordinate files (`eye/`) for all training and test scenes [here](https://cloudstore.zih.tu-dresden.de/index.php/s/nafBHm7qyLigHpq/download). We generated them from the original depth maps after doing a custom registration to the RGB images. Just extract the archive inside `datasets/` and the depth maps just be merged into the respective 7Scenes sub-folders.
+For RGB-D experiments we provide pre-computed camera coordinate files (`eye/`) for all training and test scenes [here](https://cloudstore.zih.tu-dresden.de/index.php/s/nafBHm7qyLigHpq/download). We generated them from the original depth maps after doing a custom registration to the RGB images. Just extract the archive inside `datasets/` and the coordinate files should be merged into the respective 7Scenes sub-folders.
 
 ### 12Scenes
 
 [12Scenes (Stanford)](http://graphics.stanford.edu/projects/reloc/) is a small-scale indoor re-localization dataset. The authors provide training/test split information, and a dense 3D scan of each scene, RGB and depth images as well as ground truth poses. We provide the Python script `setup_12scenes.py` to download the dataset and convert it into our format.
 
-Provided depth images are registered to the RGB images, and can be used directly.However, we provide rendered depth maps [here](https://cloudstore.zih.tu-dresden.de/index.php/s/WsbSrof3rDBgxsJ/download) which we used in our experiments. Just extract the archive inside `datasets/` and the depth maps just be merged into the respective 12Scenes sub-folders.
+Provided depth images are registered to the RGB images, and can be used directly.However, we provide rendered depth maps [here](https://cloudstore.zih.tu-dresden.de/index.php/s/WsbSrof3rDBgxsJ/download) which we used in our experiments. Just extract the archive inside `datasets/` and the depth maps should be merged into the respective 12Scenes sub-folders.
 
-For RGB-D experiments we provide pre-computed camera coordinate files (`eye/`) for all training and test scenes [here](https://cloudstore.zih.tu-dresden.de/index.php/s/preFTELFSoKKEr4/download). We generated them from the original depth maps after doing a custom registration to the RGB images. Just extract the archive inside `datasets/` and the depth maps just be merged into the respective 7Scenes sub-folders.
+For RGB-D experiments we provide pre-computed camera coordinate files (`eye/`) for all training and test scenes [here](https://cloudstore.zih.tu-dresden.de/index.php/s/preFTELFSoKKEr4/download). We generated them from the original depth maps after doing a custom registration to the RGB images. Just extract the archive inside `datasets/` and the coordinate files should be merged into the respective 12Scenes sub-folders.
 
 ### Cambridge Landmarks
 
@@ -109,9 +109,9 @@ For RGB-D experiments we provide pre-computed camera coordinate files (`eye/`) f
 
 ## Training DSAC*
 
-We train DSAC\* in two stages: Initializing scene coordinate regression, and end-to-end training. DSAC\* supports various variants of camera re-localization, depending on what information about the scene is available at training and test time, e.g. a 3D reconstruction of the scene, and depth measurements for images.
+We train DSAC\* in two stages: Initializing scene coordinate regression, and end-to-end training. DSAC\* supports various variants of camera re-localization, depending on what information about the scene is available at training and test time, e.g. a 3D reconstruction of the scene, or depth measurements for images.
 
-*Note: We provide pre-trained networks for 7Scenes, 12Scenes, and Cambridge, each trained for the three main scenarios invetigated in the paper: RGB only (RGB), RGB + 3D model (RGBM) and RGB-D. Download them [here](https://cloudstore.zih.tu-dresden.de/index.php/s/gXYQaFmjSjjebDw/download)*
+*Note: We provide pre-trained networks for 7Scenes, 12Scenes, and Cambridge, each trained for the three main scenarios investigated in the paper: RGB only (RGB), RGB + 3D model (RGBM) and RGB-D RGBD). Download them [here](https://cloudstore.zih.tu-dresden.de/index.php/s/gXYQaFmjSjjebDw/download).*
 
 You may call all training scripts with the `-h` option to see a listing of all supported command line arguments. The default settings of all parameters correspond to our experiments in the paper. 
 
@@ -146,9 +146,9 @@ When (measured) depth maps for each image are available, you call:
 ```bash
 python train_init.py <scene_name> <network_output_file> --mode 2
 ```
-This uses the `depth\` dataset folder as mode 1 to generate ground truth scene coordinates but optimizes a different loss for initalization (3D distance instead of reprojection error).
+This uses the `depth\` dataset folder similar to mode 1 to generate ground truth scene coordinates but optimizes a different loss for initalization (3D distance instead of reprojection error).
 
-*Note: The 7Scenes depth maps are not registered to the RGB images, and hence are not directly usable for training. The 12 scenes depth maps may be used as is. However, in our experiments, we used rendered depth maps for both 7Scenes and 12Scenes to initialize scene coordinate regression.* 
+*Note: The 7Scenes depth maps are not registered to the RGB images, and hence are not directly usable for training. The 12Scenes depth maps are registered properly and may be used as is. However, in our experiments, we used rendered depth maps for both 7Scenes and 12Scenes to initialize scene coordinate regression.* 
 
 ### End-To-End Training
 
@@ -158,7 +158,7 @@ End-To-End training supports two modes: RGB (mode 1) and RGB-D (mode 2) dependin
 python train_e2e.py <scene_name> <network_input_file> <network_output_file> --mode <1 or 2>
 ```
 
-`<network_input_file>` points to a network which has already been initialized for this scene, e.g. by the second training stage. `<network_output_file>` specifies under which file name the script should store the resulting new network.
+`<network_input_file>` points to a network which has already been initialized for this scene. `<network_output_file>` specifies under which file name the script should store the resulting new network.
 
 Mode 2 (RGB-D) requires pre-computed camera coordinate files (see Data Structure section above). We provide these files for 7Scenes/12Scenes, see Supported Datasets section.
 
@@ -178,7 +178,7 @@ Running the script creates two output files:
 
 `poses_<scene_name>_.txt` -- Contains for each test image the corrsponding file name, the estimated pose as 4D quaternion (wxyz) and 3D translation vector (xyz), followed by the rotation error (deg) and translation error (m).
 
-Mode 2 (RGB-D) requires pre-computed camera coordinate files (see Data Structure section above). We provide these files for 7Scenes/12Scenes, see Supported Datasets section. Note that these files have to be generated from the **measured** depth maps (but ensure proper registration to RGB images). You should not utlize rendered depth maps here, since rendering would use the ground truth camera pose which means that ground truth information leaks into your input data.
+Mode 2 (RGB-D) requires pre-computed camera coordinate files (see Data Structure section above). We provide these files for 7Scenes/12Scenes, see Supported Datasets section. Note that these files have to be generated from the **measured** depth maps (but ensure proper registration to RGB images). You should not utlize rendered depth maps here, since rendering would use the ground truth camera pose which means that ground truth test information leaks into your input data.
 
 Call the test script with the `-h` option to see a listing of all supported command line arguments. 
 
@@ -194,7 +194,7 @@ Please cite the following paper if you use DSAC\* or parts of this code in your 
   year={2020}
 }
 ```
-This code builds on our camera re-localization pipelines, namely DSAC and DSAC++:
+This code builds on our previous camera re-localization pipelines, namely DSAC and DSAC++:
 
 ```
 @inproceedings{brachmann2017dsac,
