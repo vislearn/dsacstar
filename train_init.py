@@ -46,6 +46,10 @@ parser.add_argument('--mode', '-m', type=int, default=1, choices=range(3),
 parser.add_argument('--sparse', '-sparse', action='store_true',
 	help='for mode 1 (RGB + ground truth scene coordinates) use sparse scene coordinate initialization targets (eg. for Cambridge) instead of rendered depth maps (eg. for 7scenes and 12scenes).')
 
+
+parser.add_argument('--tiny', '-tiny', action='store_true',
+	help='Train a model with massively reduced capacity for a low memory footprint.')
+
 parser.add_argument('--session', '-sid', default='',
 	help='custom session name appended to output files, useful to separate different runs of a script')
 
@@ -88,7 +92,7 @@ mean /= count
 print("Done. Mean: %.2f, %.2f, %.2f\n" % (mean[0], mean[1], mean[2]))
 
 # create network
-network = Network(mean)
+network = Network(mean, opt.tiny)
 network = network.cuda()
 network.train()
 

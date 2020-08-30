@@ -35,6 +35,9 @@ parser.add_argument('--maxpixelerror', '-maxerrr', type=float, default=100,
 parser.add_argument('--mode', '-m', type=int, default=1, choices=[1,2],
 	help='test mode: 1 = RGB, 2 = RGB-D')
 
+parser.add_argument('--tiny', '-tiny', action='store_true',
+	help='Load a model with massively reduced capacity for a low memory footprint.')
+
 parser.add_argument('--session', '-sid', default='',
 	help='custom session name appended to output files, useful to separate different runs of a script')
 
@@ -46,7 +49,7 @@ testset = CamLocDataset("./datasets/" + opt.scene + "/test", mode = opt.mode)
 testset_loader = torch.utils.data.DataLoader(testset, shuffle=False, num_workers=6)
 
 # load network
-network = Network(torch.zeros((3)))
+network = Network(torch.zeros((3)), opt.tiny)
 network.load_state_dict(torch.load(opt.network))
 network = network.cuda()
 network.eval()

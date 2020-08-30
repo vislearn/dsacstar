@@ -50,6 +50,9 @@ parser.add_argument('--maxpixelerror', '-maxerrr', type=float, default=100,
 parser.add_argument('--mode', '-m', type=int, default=1, choices=[1,2],
 	help='test mode: 1 = RGB, 2 = RGB-D')
 
+parser.add_argument('--tiny', '-tiny', action='store_true',
+	help='Train a model with massively reduced capacity for a low memory footprint.')
+
 parser.add_argument('--session', '-sid', default='',
 	help='custom session name appended to output files. Useful to separate different runs of the program')
 
@@ -61,7 +64,7 @@ trainset_loader = torch.utils.data.DataLoader(trainset, shuffle=True, num_worker
 print("Found %d training images for %s." % (len(trainset), opt.scene))
 
 # load network
-network = Network(torch.zeros((3)))
+network = Network(torch.zeros((3)), opt.tiny)
 network.load_state_dict(torch.load(opt.network_in))
 network = network.cuda()
 network.train()
