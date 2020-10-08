@@ -142,6 +142,8 @@ class CamLocDataset(Dataset):
 				coords = torch.load(self.coord_files[idx])
 			else:
 				depth = io.imread(self.coord_files[idx])
+				depth = depth.astype(np.float64)
+				depth /= 1000 # from millimeters to meters
 		elif self.eye: 
 			coords = torch.load(self.coord_files[idx])
 		else:
@@ -219,8 +221,6 @@ class CamLocDataset(Dataset):
 
 			# subsample to network output size
 			depth = depth[offsetY::Network.OUTPUT_SUBSAMPLE,offsetX::Network.OUTPUT_SUBSAMPLE] 
-			depth = depth.astype(np.float64)
-			depth /= 1000 # from millimeters to meters
 
 			# construct x and y coordinates of camera coordinate
 			xy = self.prediction_grid[:,:depth.shape[0],:depth.shape[1]].copy()
