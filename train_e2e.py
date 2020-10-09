@@ -24,7 +24,7 @@ parser.add_argument('--hypotheses', '-hyps', type=int, default=64,
 	help='number of hypotheses, i.e. number of RANSAC iterations')
 
 parser.add_argument('--threshold', '-t', type=float, default=10, 
-	help='inlier threshold in pixels')
+	help='inlier threshold in pixels (RGB) or centimeters (RGB-D)')
 
 parser.add_argument('--inlieralpha', '-ia', type=float, default=100, 
 	help='alpha parameter of the soft inlier count; controls the softness of the hypotheses score distribution; lower means softer')
@@ -78,6 +78,8 @@ epochs = int(opt.iterations / len(trainset))
 
 # keep track of training progress
 train_log = open('log_e2e_%s_%s.txt' % (opt.scene, opt.session), 'w', 1)
+
+training_start = time.time()
 
 for epoch in range(epochs):	
 
@@ -143,5 +145,5 @@ for epoch in range(epochs):
 	print('Saving snapshot of the network to %s.' % opt.network_out)
 	torch.save(network.state_dict(), opt.network_out)
 
-print('Done without errors.')
+print('Done without errors. Time: %.1f minutes.' % ((time.time() - training_start) / 60))
 train_log.close()
