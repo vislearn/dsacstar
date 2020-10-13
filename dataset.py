@@ -134,6 +134,10 @@ class CamLocDataset(Dataset):
 
 		focal_length = float(np.loadtxt(self.calibration_files[idx]))
 
+		# image will be normalized to standard height, adjust focal length as well
+		f_scale_factor = self.image_height / image.shape[0]
+		focal_length *= f_scale_factor
+
 		pose = np.loadtxt(self.pose_files[idx])
 		pose = torch.from_numpy(pose).float()
 
