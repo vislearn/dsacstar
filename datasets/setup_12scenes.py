@@ -45,9 +45,9 @@ for ds in ['apt1', 'apt2', 'office1', 'office2']:
 		mkdir(target_folder + 'test/poses/')
 		mkdir(target_folder + 'test/calibration/')
 
-		mkdir(target_folder + 'training/rgb/')
-		mkdir(target_folder + 'training/poses/')
-		mkdir(target_folder + 'training/calibration/')		
+		mkdir(target_folder + 'train/rgb/')
+		mkdir(target_folder + 'train/poses/')
+		mkdir(target_folder + 'train/calibration/')		
 
 		# read the train / test split - the first sequence is used for testing, everything else for training
 		with open(ds + '/' + scene + '/split.txt', 'r') as f:
