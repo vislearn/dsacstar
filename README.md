@@ -11,9 +11,12 @@
 - [Testing DSAC*](#testing-dsac)
 - [Publications](#publications)
 
+**Change Log**
+* 5 Jan 2022: Added an `environment.yml` for easier installation of dependencies. 
+
 ## Introduction
 
-DSAC\* is a learning-based visual re-localization method. After being trained for a specific scene, DSAC\* is able to estimate the camera rotation and translation from a single, new image of the same scene. DSAC\* is versatile w.r.t what data is available at training and test time. It can be trained from RGB images and ground truth poses alone, or additionally utilize depth maps (measured or rendered) or sparse scene reconstructions for training. During test time, it supports pose estimation from RGB as well as RGB-D inputs.
+DSAC\* is a learning-based visual re-localization method, [published in TPAMI 2021](https://ieeexplore.ieee.org/document/9394752). After being trained for a specific scene, DSAC\* is able to estimate the camera rotation and translation from a single, new image of the same scene. DSAC\* is versatile w.r.t what data is available at training and test time. It can be trained from RGB images and ground truth poses alone, or additionally utilize depth maps (measured or rendered) or sparse scene reconstructions for training. During test time, it supports pose estimation from RGB as well as RGB-D inputs.
 
 DSAC\* is a combination of [Scene Coordinate Regression](https://ieeexplore.ieee.org/document/6619221) with CNNs and [Differentiable RANSAC (DSAC)](https://arxiv.org/abs/1611.05705) for end-to-end training. This code extends and improves our previous re-localization pipeline, [DSAC++](https://github.com/vislearn/LessMore) with support for RGB-D inputs, support for data augmentation, a leaner network architecture, reduced training and test time, as well as other improvements for increased accuracy.
 
@@ -21,20 +24,25 @@ DSAC\* is a combination of [Scene Coordinate Regression](https://ieeexplore.ieee
 
 ![](results.png)
 
-For more details, we kindly refer to the [paper](https://arxiv.org/abs/2002.12324). You find a BibTeX reference of the paper at the end of this readme. 
+For more details, we kindly refer to the [paper](https://ieeexplore.ieee.org/document/9394752). You find a BibTeX reference of the paper at the end of this readme. 
 
 ## Installation
 
 DSAC\* is based on PyTorch, and includes a custom C++ extension which you have to compile and install (but it's easy). The main framework is implemented in Python, including data processing and setting parameters. The C++ extension encapsulates robust pose optimization and the respective gradient calculation for efficiency reasons.
 
-DSAC\* requires the following python packages, and we tested it with the package version in brackets
+DSAC\* requires the following python packages, and we tested it with the package versions in brackets
 
 ```
 pytorch (1.6.0)
 opencv (3.4.2)
 scikit-image (0.16.2)
 ```
-**Note:** The code does not support OpenCV 4.x at the moment.
+
+The repository contains an `environment.yml` for the use with Conda:
+```bash
+conda env create -f environment.yml
+conda activate dsacstar
+```
 
 You compile and install the C++ extension by executing:
 
@@ -45,6 +53,8 @@ python setup.py install
 Compilation requires access to OpenCV header files and libraries. If you are using Conda, the setup script will look for the OpenCV package in the current Conda environment. Otherwise (or if that fails), you have to set the OpenCV library directory and include directory yourself by editing the setup.py file.
 
 If compilation succeeds, you can `import dsacstar` in your python scripts. The extension provides four functions: `dsacstar.forward_rgb(...)`, `dsacstar.backward_rgb(...)`, `dsacstar.forward_rgbd(...)` and `dsacstar.backward_rgbd(...)`. Check our python scripts or the documentation in `dsacstar/dsacstar.cpp` for reference how to use these functions.
+
+**Note:** The code does not support OpenCV 4.x at the moment, due to legacy function calls in the `dsacstar` module. The code can be adjusted for the use with OpenCV 4.x but you might still face compiler compatibility issues when installing OpenCV via Conda. Any prebuilt OpenCV binaries must be compatible to the compiler of your system that compiles the `dsacstar` module. Compiling OpenCV from source on your system should ensure compiler compatibility.
 
 ## Data Structure
 
@@ -187,11 +197,11 @@ Call the test script with the `-h` option to see a listing of all supported comm
 Please cite the following paper if you use DSAC\* or parts of this code in your own work.
 
 ```
-@article{brachmann2020dsacstar,
+@article{brachmann2021dsacstar,
   title={Visual Camera Re-Localization from {RGB} and {RGB-D} Images Using {DSAC}},
   author={Brachmann, Eric and Rother, Carsten},
-  journal={arXiv},
-  year={2020}
+  journal={TPAMI},
+  year={2021}
 }
 ```
 This code builds on our previous camera re-localization pipelines, namely DSAC and DSAC++:

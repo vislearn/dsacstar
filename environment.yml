@@ -1,0 +1,10 @@
+name: dsacstar
+channels:
+  - pytorch
+  - anaconda
+dependencies:
+  - pytorch=1.6.0
+  - torchvision=0.7.0
+  - cudatoolkit=10.2
+  - scikit-image=0.16.2
+  - opencv=3.4.2
