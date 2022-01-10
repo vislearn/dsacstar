@@ -13,6 +13,7 @@
 
 **Change Log**
 * 5 Jan 2022: Added an `environment.yml` for easier installation of dependencies. 
+* 10 Jan 2022: Fixed file naming errors of pre-trained models for Cambridge Landmarks 
 
 ## Introduction
 
@@ -121,7 +122,7 @@ For RGB-D experiments we provide pre-computed camera coordinate files (`eye/`) f
 
 We train DSAC\* in two stages: Initializing scene coordinate regression, and end-to-end training. DSAC\* supports various variants of camera re-localization, depending on what information about the scene is available at training and test time, e.g. a 3D reconstruction of the scene, or depth measurements for images.
 
-*Note: We provide pre-trained networks for 7Scenes, 12Scenes, and Cambridge, each trained for the three main scenarios investigated in the paper: RGB only (RGB), RGB + 3D model (RGBM) and RGB-D RGBD). Download them [here](https://doi.org/10.11588/data/N07HKC/W90ELY).*
+*Note: We provide pre-trained networks for 7Scenes, 12Scenes, and Cambridge, each trained for the three main scenarios investigated in the paper: RGB only (RGB), RGB + 3D model (RGBM) and RGB-D RGBD). Download them [here](https://doi.org/10.11588/data/N07HKC/CBK0OL).*
 
 You may call all training scripts with the `-h` option to see a listing of all supported command line arguments. The default settings of all parameters correspond to our experiments in the paper. 
 
