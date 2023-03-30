@@ -8,3 +8,5 @@ dependencies:
   - cudatoolkit=10.2
   - scikit-image=0.16.2
   - opencv=3.4.2
+  - pip:
+      - pycolmap==0.3.0
