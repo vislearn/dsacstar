@@ -100,17 +100,17 @@ Prior to using these datasets, please check their orignial licenses (see the web
 
 [7Scenes (MSR)](https://www.microsoft.com/en-us/research/project/rgb-d-dataset-7-scenes/) is a small-scale indoor re-localization dataset. The authors provide training/test split information, and a dense 3D scan of each scene, RGB and depth images as well as ground truth poses. We provide the Python script `setup_7scenes.py` to download the dataset and convert it into our format.
 
-**Note that the provided depth images are not yet registered to the RGB images, and using them directly will lead to inferior results.** As an alternative, we provide rendered depth maps [here](https://doi.org/10.11588/data/N07HKC/4PLEEJ). Just extract the archive inside `datasets/` and the depth maps should be merged into the respective 7Scenes sub-folders.
+**Note that the provided depth images are not yet registered to the RGB images, and using them directly will lead to inferior results.** As an alternative, we provide rendered depth maps [here](https://doi.org/10.11588/data/N07HKC/4PLEEJ) (see a note on download stability below). Just extract the archive inside `datasets/` and the depth maps should be merged into the respective 7Scenes sub-folders.
 
-For RGB-D experiments we provide pre-computed camera coordinate files (`eye/`) for all training and test scenes [here](https://doi.org/10.11588/data/N07HKC/M15VC5). We generated them from the original depth maps after doing a custom registration to the RGB images. Just extract the archive inside `datasets/` and the coordinate files should be merged into the respective 7Scenes sub-folders.
+For RGB-D experiments we provide pre-computed camera coordinate files (`eye/`) for all training and test scenes [here](https://doi.org/10.11588/data/N07HKC/M15VC5) (see a note on download stability below). We generated them from the original depth maps after doing a custom registration to the RGB images. Just extract the archive inside `datasets/` and the coordinate files should be merged into the respective 7Scenes sub-folders.
 
 ### 12Scenes
 
 [12Scenes (Stanford)](http://graphics.stanford.edu/projects/reloc/) is a small-scale indoor re-localization dataset. The authors provide training/test split information, and a dense 3D scan of each scene, RGB and depth images as well as ground truth poses. We provide the Python script `setup_12scenes.py` to download the dataset and convert it into our format.
 
-Provided depth images are registered to the RGB images, and can be used directly.However, we provide rendered depth maps [here](https://doi.org/10.11588/data/N07HKC/OMLKR1) which we used in our experiments. Just extract the archive inside `datasets/` and the depth maps should be merged into the respective 12Scenes sub-folders.
+Provided depth images are registered to the RGB images, and can be used directly. However, we provide rendered depth maps [here](https://doi.org/10.11588/data/N07HKC/OMLKR1) (see a note on download stability below) which we used in our experiments. Just extract the archive inside `datasets/` and the depth maps should be merged into the respective 12Scenes sub-folders.
 
-For RGB-D experiments we provide pre-computed camera coordinate files (`eye/`) for all training and test scenes [here](https://doi.org/10.11588/data/N07HKC/J1VVWI). We generated them from the original depth maps after doing a custom registration to the RGB images. Just extract the archive inside `datasets/` and the coordinate files should be merged into the respective 12Scenes sub-folders.
+For RGB-D experiments we provide pre-computed camera coordinate files (`eye/`) for all training and test scenes [here](https://doi.org/10.11588/data/N07HKC/J1VVWI) (see a note on download stability below). We generated them from the original depth maps after doing a custom registration to the RGB images. Just extract the archive inside `datasets/` and the coordinate files should be merged into the respective 12Scenes sub-folders.
 
 ### Cambridge Landmarks
 
@@ -122,7 +122,7 @@ For RGB-D experiments we provide pre-computed camera coordinate files (`eye/`) f
 
 We train DSAC\* in two stages: Initializing scene coordinate regression, and end-to-end training. DSAC\* supports various variants of camera re-localization, depending on what information about the scene is available at training and test time, e.g. a 3D reconstruction of the scene, or depth measurements for images.
 
-*Note: We provide pre-trained networks for 7Scenes, 12Scenes, and Cambridge, each trained for the three main scenarios investigated in the paper: RGB only (RGB), RGB + 3D model (RGBM) and RGB-D RGBD). Download them [here](https://doi.org/10.11588/data/N07HKC/CBK0OL).*
+*Note: We provide pre-trained networks for 7Scenes, 12Scenes, and Cambridge, each trained for the three main scenarios investigated in the paper: RGB only (RGB), RGB + 3D model (RGBM) and RGB-D RGBD). Download them [here](https://doi.org/10.11588/data/N07HKC/CBK0OL) (see a note on download stability below).*
 
 You may call all training scripts with the `-h` option to see a listing of all supported command line arguments. The default settings of all parameters correspond to our experiments in the paper. 
 
@@ -222,3 +222,16 @@ This code builds on our previous camera re-localization pipelines, namely DSAC a
   year={2018}
 }
 ```
+
+## Note on Download Stability
+
+If you experience issues when downloading our data packages from the academic provider HeiData via their web interface, we advise to use wget or a similar tool which allows you to resume incomplete downloads.
+
+E.g. to download the rendered depth maps for 7Scenes, you can use the following command:
+
+```bash
+"https://heidata.uni-heidelberg.de/api/access/datafile/:persistentId?persistentId=doi:10.11588/data/N07HKC/4PLEEJ
+```
+
+where `:persistentId` is the DOI of the respective data package, `doi:10.11588/data/N07HKC/4PLEEJ` in this case.
+If the download ends prematurely, you can resume it by adding the `-c` flag to the wget command.
